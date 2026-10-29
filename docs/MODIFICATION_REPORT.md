@@ -62,9 +62,9 @@ README lists actual class/function ranges. New public symbols: GramianAdapter, D
 ## 5. Exact Git comparison
 
 ```powershell
-git diff 96675826e9ef234a9b01cc63d484c66cb0441bc0 CODE_COMMIT_SHA --stat
-git diff 96675826e9ef234a9b01cc63d484c66cb0441bc0 CODE_COMMIT_SHA -- code/TFC code/config_files/extension.py configs tests requirements.txt
-git diff 96675826e9ef234a9b01cc63d484c66cb0441bc0 CODE_COMMIT_SHA -- LICENSE code/baselines code/TFC/model.py code/TFC/loss.py code/TFC/dataloader.py
+git diff 96675826e9ef234a9b01cc63d484c66cb0441bc0 1cd2cb367d5dd3473815fdc68cceffbbf19eb683 --stat
+git diff 96675826e9ef234a9b01cc63d484c66cb0441bc0 1cd2cb367d5dd3473815fdc68cceffbbf19eb683 -- code/TFC code/config_files/extension.py configs tests requirements.txt
+git diff 96675826e9ef234a9b01cc63d484c66cb0441bc0 1cd2cb367d5dd3473815fdc68cceffbbf19eb683 -- LICENSE code/baselines code/TFC/model.py code/TFC/loss.py code/TFC/dataloader.py
 git merge-base --is-ancestor 96675826e9ef234a9b01cc63d484c66cb0441bc0 HEAD
 ```
 

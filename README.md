@@ -169,7 +169,7 @@ Modified behavior: Adds virtualenv, pytest cache, weight formats and logs.
 
 Reason: Keep local dependencies and large weights out of Git.
 
-Updated file: [L1-L14](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/.gitignore#L1-L14).
+Updated file: [L1-L14](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/.gitignore#L1-L14).
 
 Classes/functions: not applicable (configuration/documentation).
 
@@ -181,12 +181,12 @@ Modified behavior: Uses rand_like on input device.
 
 Reason: Enable CPU/CUDA-compatible frequency augmentation.
 
-Updated file: [L1-L133](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/augmentations.py#L1-L133).
+Updated file: [L1-L133](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/augmentations.py#L1-L133).
 
 Classes/functions:
 
-- `remove_frequency`: [L60-L63](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/augmentations.py#L60-L63)
-- `add_frequency`: [L65-L72](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/augmentations.py#L65-L72)
+- `remove_frequency`: [L60-L63](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/augmentations.py#L60-L63)
+- `add_frequency`: [L65-L72](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/augmentations.py#L65-L72)
 
 ### `code/TFC/main.py`
 
@@ -196,7 +196,7 @@ Modified behavior: Config/factory, explicit device, data root, loss logs, encode
 
 Reason: Expose extensions through the existing CLI.
 
-Updated file: [L1-L135](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/main.py#L1-L135).
+Updated file: [L1-L135](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/main.py#L1-L135).
 
 Classes/functions:
 
@@ -210,14 +210,14 @@ Modified behavior: Optional custom loss, finite checks/logging, per-batch zero_g
 
 Reason: Preserve objective while fixing training/device/checkpoint issues.
 
-Updated file: [L1-L330](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/trainer.py#L1-L330).
+Updated file: [L1-L330](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/trainer.py#L1-L330).
 
 Classes/functions:
 
-- `Trainer`: [L20-L110](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/trainer.py#L20-L110)
-- `model_pretrain`: [L112-L161](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/trainer.py#L112-L161)
-- `model_finetune`: [L164-L258](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/trainer.py#L164-L258)
-- `model_test`: [L261-L330](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/trainer.py#L261-L330)
+- `Trainer`: [L20-L110](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/trainer.py#L20-L110)
+- `model_pretrain`: [L112-L161](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/trainer.py#L112-L161)
+- `model_finetune`: [L164-L258](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/trainer.py#L164-L258)
+- `model_test`: [L261-L330](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/trainer.py#L261-L330)
 
 ### `code/TFC/dinov3_encoder.py`
 
@@ -227,22 +227,22 @@ Modified behavior: GramianAdapter, DINOv3Encoder, DINOv3TFC and build_model with
 
 Reason: Bridge one-dimensional views to DINOv3 while retaining original forward/projection contract.
 
-Updated file: [L1-L111](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/dinov3_encoder.py#L1-L111).
+Updated file: [L1-L111](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/dinov3_encoder.py#L1-L111).
 
 Classes/functions:
 
-- `GramianAdapter`: [L12-L35](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/dinov3_encoder.py#L12-L35)
-- `GramianAdapter.__init__`: [L15-L21](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/dinov3_encoder.py#L15-L21)
-- `GramianAdapter.forward`: [L23-L35](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/dinov3_encoder.py#L23-L35)
-- `DINOv3Encoder`: [L38-L84](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/dinov3_encoder.py#L38-L84)
-- `DINOv3Encoder.__init__`: [L41-L68](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/dinov3_encoder.py#L41-L68)
-- `DINOv3Encoder.set_frozen`: [L70-L73](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/dinov3_encoder.py#L70-L73)
-- `DINOv3Encoder.train`: [L75-L79](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/dinov3_encoder.py#L75-L79)
-- `DINOv3Encoder.forward`: [L81-L84](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/dinov3_encoder.py#L81-L84)
-- `DINOv3TFC`: [L87-L100](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/dinov3_encoder.py#L87-L100)
-- `DINOv3TFC.__init__`: [L90-L95](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/dinov3_encoder.py#L90-L95)
-- `DINOv3TFC._projector`: [L98-L100](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/dinov3_encoder.py#L98-L100)
-- `build_model`: [L103-L111](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/dinov3_encoder.py#L103-L111)
+- `GramianAdapter`: [L12-L35](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/dinov3_encoder.py#L12-L35)
+- `GramianAdapter.__init__`: [L15-L21](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/dinov3_encoder.py#L15-L21)
+- `GramianAdapter.forward`: [L23-L35](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/dinov3_encoder.py#L23-L35)
+- `DINOv3Encoder`: [L38-L84](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/dinov3_encoder.py#L38-L84)
+- `DINOv3Encoder.__init__`: [L41-L68](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/dinov3_encoder.py#L41-L68)
+- `DINOv3Encoder.set_frozen`: [L70-L73](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/dinov3_encoder.py#L70-L73)
+- `DINOv3Encoder.train`: [L75-L79](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/dinov3_encoder.py#L75-L79)
+- `DINOv3Encoder.forward`: [L81-L84](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/dinov3_encoder.py#L81-L84)
+- `DINOv3TFC`: [L87-L100](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/dinov3_encoder.py#L87-L100)
+- `DINOv3TFC.__init__`: [L90-L95](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/dinov3_encoder.py#L90-L95)
+- `DINOv3TFC._projector`: [L98-L100](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/dinov3_encoder.py#L98-L100)
+- `build_model`: [L103-L111](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/dinov3_encoder.py#L103-L111)
 
 ### `code/TFC/custom_loss.py`
 
@@ -252,13 +252,13 @@ Modified behavior: RelationalConsistencyLoss and add_custom_loss with validation
 
 Reason: Align inter-sample geometry without replacing paired contrastive learning.
 
-Updated file: [L1-L31](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/custom_loss.py#L1-L31).
+Updated file: [L1-L31](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/custom_loss.py#L1-L31).
 
 Classes/functions:
 
-- `RelationalConsistencyLoss`: [L8-L20](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/custom_loss.py#L8-L20)
-- `RelationalConsistencyLoss.forward`: [L11-L20](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/custom_loss.py#L11-L20)
-- `add_custom_loss`: [L23-L31](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/custom_loss.py#L23-L31)
+- `RelationalConsistencyLoss`: [L8-L20](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/custom_loss.py#L8-L20)
+- `RelationalConsistencyLoss.forward`: [L11-L20](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/custom_loss.py#L11-L20)
+- `add_custom_loss`: [L23-L31](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/custom_loss.py#L23-L31)
 
 ### `code/TFC/checkpoint.py`
 
@@ -268,12 +268,12 @@ Modified behavior: save_checkpoint/load_checkpoint with metadata, optimizer, epo
 
 Reason: Resume pretraining and reject incompatible configurations.
 
-Updated file: [L1-L25](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/checkpoint.py#L1-L25).
+Updated file: [L1-L25](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/checkpoint.py#L1-L25).
 
 Classes/functions:
 
-- `save_checkpoint`: [L6-L11](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/checkpoint.py#L6-L11)
-- `load_checkpoint`: [L14-L25](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/TFC/checkpoint.py#L14-L25)
+- `save_checkpoint`: [L6-L11](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/checkpoint.py#L6-L11)
+- `load_checkpoint`: [L14-L25](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/TFC/checkpoint.py#L14-L25)
 
 ### `code/config_files/extension.py`
 
@@ -283,11 +283,11 @@ Modified behavior: DEFAULTS/configure and validated JSON overrides.
 
 Reason: Share extension controls without modifying inherited dataset configs.
 
-Updated file: [L1-L31](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/config_files/extension.py#L1-L31).
+Updated file: [L1-L31](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/config_files/extension.py#L1-L31).
 
 Classes/functions:
 
-- `configure`: [L13-L31](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/code/config_files/extension.py#L13-L31)
+- `configure`: [L13-L31](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/code/config_files/extension.py#L13-L31)
 
 ### `configs/original.json`
 
@@ -297,7 +297,7 @@ Modified behavior: Original encoder with custom loss disabled.
 
 Reason: Explicit original-mode recipe.
 
-Updated file: [L1-L1](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/configs/original.json#L1-L1).
+Updated file: [L1-L1](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/configs/original.json#L1-L1).
 
 Classes/functions: not applicable (configuration/documentation).
 
@@ -309,7 +309,7 @@ Modified behavior: ViT-S/16, 224-pixel GASF, random unfrozen weights, batch 8, a
 
 Reason: Explicit no-download starting recipe.
 
-Updated file: [L1-L12](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/configs/dinov3.json#L1-L12).
+Updated file: [L1-L12](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/configs/dinov3.json#L1-L12).
 
 Classes/functions: not applicable (configuration/documentation).
 
@@ -321,7 +321,7 @@ Modified behavior: Modern TF-C/pytest dependency ranges.
 
 Reason: Install extension without changing unrelated baseline environments.
 
-Updated file: [L1-L6](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/requirements.txt#L1-L6).
+Updated file: [L1-L6](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/requirements.txt#L1-L6).
 
 Classes/functions: not applicable (configuration/documentation).
 
@@ -333,7 +333,7 @@ Modified behavior: Root import paths and two CPU threads.
 
 Reason: Run repository-root tests with bounded CPU overhead.
 
-Updated file: [L1-L8](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/tests/conftest.py#L1-L8).
+Updated file: [L1-L8](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/tests/conftest.py#L1-L8).
 
 Classes/functions:
 
@@ -347,27 +347,27 @@ Modified behavior: Original parity, loss math/gradients, actual DINOv3, freeze/u
 
 Reason: Validate mechanics without claiming benchmark performance.
 
-Updated file: [L1-L262](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/tests/test_extensions.py#L1-L262).
+Updated file: [L1-L262](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/tests/test_extensions.py#L1-L262).
 
 Classes/functions:
 
-- `config`: [L25-L32](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/tests/test_extensions.py#L25-L32)
-- `loader`: [L35-L37](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/tests/test_extensions.py#L35-L37)
-- `test_original_matches_upstream_and_checkpoint`: [L40-L59](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/tests/test_extensions.py#L40-L59)
-- `test_adapter_shape_and_gradient`: [L63-L68](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/tests/test_extensions.py#L63-L68)
-- `test_adapter_rejects_invalid`: [L72-L74](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/tests/test_extensions.py#L72-L74)
-- `test_relational_math_backward`: [L77-L90](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/tests/test_extensions.py#L77-L90)
-- `test_loss_dimensions`: [L94-L96](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/tests/test_extensions.py#L94-L96)
-- `test_loss_rejects_nonfinite`: [L100-L102](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/tests/test_extensions.py#L100-L102)
-- `test_weight_and_zero_equivalence`: [L106-L118](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/tests/test_extensions.py#L106-L118)
-- `test_original_training_checkpoint_and_resume`: [L121-L140](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/tests/test_extensions.py#L121-L140)
-- `test_finetune_step`: [L143-L150](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/tests/test_extensions.py#L143-L150)
-- `test_trainer_saves_epoch_checkpoint`: [L153-L162](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/tests/test_extensions.py#L153-L162)
-- `dino_config`: [L166-L173](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/tests/test_extensions.py#L166-L173)
-- `test_real_dinov3_forward_freeze_unfreeze_training`: [L176-L206](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/tests/test_extensions.py#L176-L206)
-- `test_pretrained_checkpoint`: [L209-L217](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/tests/test_extensions.py#L209-L217)
-- `test_cuda_adapter_loss`: [L220-L226](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/tests/test_extensions.py#L220-L226)
-- `test_cli_pretraining_and_resume`: [L230-L262](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/tests/test_extensions.py#L230-L262)
+- `config`: [L25-L32](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/tests/test_extensions.py#L25-L32)
+- `loader`: [L35-L37](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/tests/test_extensions.py#L35-L37)
+- `test_original_matches_upstream_and_checkpoint`: [L40-L59](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/tests/test_extensions.py#L40-L59)
+- `test_adapter_shape_and_gradient`: [L63-L68](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/tests/test_extensions.py#L63-L68)
+- `test_adapter_rejects_invalid`: [L72-L74](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/tests/test_extensions.py#L72-L74)
+- `test_relational_math_backward`: [L77-L90](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/tests/test_extensions.py#L77-L90)
+- `test_loss_dimensions`: [L94-L96](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/tests/test_extensions.py#L94-L96)
+- `test_loss_rejects_nonfinite`: [L100-L102](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/tests/test_extensions.py#L100-L102)
+- `test_weight_and_zero_equivalence`: [L106-L118](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/tests/test_extensions.py#L106-L118)
+- `test_original_training_checkpoint_and_resume`: [L121-L140](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/tests/test_extensions.py#L121-L140)
+- `test_finetune_step`: [L143-L150](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/tests/test_extensions.py#L143-L150)
+- `test_trainer_saves_epoch_checkpoint`: [L153-L162](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/tests/test_extensions.py#L153-L162)
+- `dino_config`: [L166-L173](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/tests/test_extensions.py#L166-L173)
+- `test_real_dinov3_forward_freeze_unfreeze_training`: [L176-L206](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/tests/test_extensions.py#L176-L206)
+- `test_pretrained_checkpoint`: [L209-L217](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/tests/test_extensions.py#L209-L217)
+- `test_cuda_adapter_loss`: [L220-L226](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/tests/test_extensions.py#L220-L226)
+- `test_cli_pretraining_and_resume`: [L230-L262](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/tests/test_extensions.py#L230-L262)
 
 ### `docs/UPSTREAM_README.md`
 
@@ -377,7 +377,7 @@ Modified behavior: Exact content archive; relative links keep their historical r
 
 Reason: Preserve attribution and original usage history.
 
-Updated file: [L1-L192](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/docs/UPSTREAM_README.md#L1-L192).
+Updated file: [L1-L192](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/docs/UPSTREAM_README.md#L1-L192).
 
 Classes/functions: not applicable (configuration/documentation).
 
@@ -389,7 +389,7 @@ Modified behavior: Extension architecture, equations, usage, tests and source ma
 
 Reason: Make modifications auditable.
 
-Updated file: [L1-L424](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/README.md#L1-L424).
+Updated file: [L1-L424](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/README.md#L1-L424).
 
 Classes/functions: not applicable (configuration/documentation).
 
@@ -401,7 +401,7 @@ Modified behavior: Architecture analysis, before/after map, exact diff hunks, te
 
 Reason: Record engineering decisions and evidence.
 
-Updated file: [L1-L147](https://github.com/nqming/TFC-DINOv3/blob/CODE_COMMIT_SHA/docs/MODIFICATION_REPORT.md#L1-L147).
+Updated file: [L1-L147](https://github.com/nqming/TFC-DINOv3/blob/1cd2cb367d5dd3473815fdc68cceffbbf19eb683/docs/MODIFICATION_REPORT.md#L1-L147).
 
 Classes/functions: not applicable (configuration/documentation).
 
