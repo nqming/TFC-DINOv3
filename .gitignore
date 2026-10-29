@@ -6,3 +6,9 @@ datasets
 *.log
 *.pt
 *.zip
+
+.venv/
+.pytest_cache/
+*.pth
+*.safetensors
+experiments_logs/

@@ -1,0 +1,12 @@
+{
+  "encoder": "dinov3",
+  "dinov3_repo": "../dinov3-official",
+  "dinov3_model": "dinov3_vits16",
+  "dinov3_pretrained": false,
+  "dinov3_weights": null,
+  "dinov3_freeze": false,
+  "dinov3_image_size": 224,
+  "custom_loss_enabled": true,
+  "custom_loss_weight": 0.1,
+  "batch_size": 8
+}

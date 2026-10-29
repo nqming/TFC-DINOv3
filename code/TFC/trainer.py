@@ -1,8 +1,11 @@
 import os
+import logging
 import sys
 sys.path.append("..")
 
 from loss import *
+from custom_loss import add_custom_loss
+from checkpoint import save_checkpoint
 from sklearn.metrics import roc_auc_score, classification_report, confusion_matrix, \
     average_precision_score, accuracy_score, precision_score,f1_score,recall_score
 from sklearn.neighbors import KNeighborsClassifier
@@ -23,15 +26,17 @@ def Trainer(model,  model_optimizer, classifier, classifier_optimizer, train_dl,
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(model_optimizer, 'min')
     if training_mode == 'pre_train':
         print('Pretraining on source dataset')
-        for epoch in range(1, config.num_epoch + 1):
+        for epoch in range(getattr(config, "start_epoch", 0) + 1, config.num_epoch + 1):
             # Train and validate
             """Train. In fine-tuning, this part is also trained???"""
             train_loss = model_pretrain(model, model_optimizer, criterion, train_dl, config, device, training_mode)
-            logger.debug(f'\nPre-training Epoch : {epoch}', f'Train Loss : {train_loss:.4f}')
+            logger.debug(f'Pre-training Epoch: {epoch} Train Loss: {train_loss:.4f}')
+            os.makedirs(os.path.join(experiment_log_dir, 'saved_models'), exist_ok=True)
+            save_checkpoint(os.path.join(experiment_log_dir, 'saved_models', 'ckp_last.pt'),
+                            model, model_optimizer, epoch, config)
 
         os.makedirs(os.path.join(experiment_log_dir, "saved_models"), exist_ok=True)
-        chkpoint = {'model_state_dict': model.state_dict()}
-        torch.save(chkpoint, os.path.join(experiment_log_dir, "saved_models", f'ckp_last.pt'))
+
         print('Pretrained model is stored at folder:{}'.format(experiment_log_dir+'saved_models'+'ckp_last.pt'))
 
     """Fine-tuning and Test"""
@@ -42,6 +47,10 @@ def Trainer(model,  model_optimizer, classifier, classifier_optimizer, train_dl,
         total_f1 = []
         KNN_f1 = []
         global emb_finetune, label_finetune, emb_test, label_test
+        saved_dir = os.path.join(experiment_log_dir, 'saved_models')
+        os.makedirs(saved_dir, exist_ok=True)
+        model_path = os.path.join(saved_dir, 'finetune_model.pt')
+        classifier_path = os.path.join(saved_dir, 'finetune_classifier.pt')
 
         for epoch in range(1, config.num_epoch + 1):
             logger.debug(f'\nEpoch : {epoch}')
@@ -52,20 +61,17 @@ def Trainer(model,  model_optimizer, classifier, classifier_optimizer, train_dl,
 
 
             # save best fine-tuning model""
-            global arch
-            arch = 'sleepedf2eplipsy'
             if len(total_f1) == 0 or F1 > max(total_f1):
                 print('update fine-tuned model')
-                os.makedirs('experiments_logs/finetunemodel/', exist_ok=True)
-                torch.save(model.state_dict(), 'experiments_logs/finetunemodel/' + arch + '_model.pt')
-                torch.save(classifier.state_dict(), 'experiments_logs/finetunemodel/' + arch + '_classifier.pt')
+                torch.save(model.state_dict(), model_path)
+                torch.save(classifier.state_dict(), classifier_path)
             total_f1.append(F1)
 
             # evaluate on the test set
             """Testing set"""
             logger.debug('Test on Target datasts test set')
-            model.load_state_dict(torch.load('experiments_logs/finetunemodel/' + arch + '_model.pt'))
-            classifier.load_state_dict(torch.load('experiments_logs/finetunemodel/' + arch + '_classifier.pt'))
+            model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
+            classifier.load_state_dict(torch.load(classifier_path, map_location=device, weights_only=True))
             test_loss, test_acc, test_auc, test_prc, emb_test, label_test, performance = model_test(model, test_dl, config, device, training_mode,
                                                              classifier=classifier, classifier_optimizer=classifier_optimizer)
             performance_list.append(performance)
@@ -112,6 +118,7 @@ def model_pretrain(model, model_optimizer, criterion, train_loader, config, devi
     model_optimizer.zero_grad()
 
     for batch_idx, (data, labels, aug1, data_f, aug1_f) in enumerate(train_loader):
+        model_optimizer.zero_grad(set_to_none=True)
         data, labels = data.float().to(device), labels.long().to(device) # data: [128, 1, 178], labels: [128]
         aug1 = aug1.float().to(device)  # aug1 = aug2 : [128, 1, 178]
         data_f, aug1_f = data_f.float().to(device), aug1_f.float().to(device)  # aug1 = aug2 : [128, 1, 178]
@@ -122,7 +129,7 @@ def model_pretrain(model, model_optimizer, criterion, train_loader, config, devi
 
         """Compute Pre-train loss"""
         """NTXentLoss: normalized temperature-scaled cross entropy loss. From SimCLR"""
-        nt_xent_criterion = NTXentLoss_poly(device, config.batch_size, config.Context_Cont.temperature,
+        nt_xent_criterion = NTXentLoss_poly(device, data.shape[0], config.Context_Cont.temperature,
                                        config.Context_Cont.use_cosine_similarity) # device, 128, 0.2, True
 
         loss_t = nt_xent_criterion(h_t, h_t_aug)
@@ -133,12 +140,20 @@ def model_pretrain(model, model_optimizer, criterion, train_loader, config, devi
         loss_c = (1 + l_TF - l_1) + (1 + l_TF - l_2) + (1 + l_TF - l_3)
 
         lam = 0.2
-        loss = lam*(loss_t + loss_f) + l_TF
+        original_loss = lam*(loss_t + loss_f) + l_TF
+        loss, custom = add_custom_loss(original_loss, z_t, z_f, z_t_aug, z_f_aug, config)
+        if not torch.isfinite(loss):
+            raise FloatingPointError("Non-finite pretraining loss")
+        logging.getLogger("tfc.loss").info(
+            "pretrain batch=%d time=%.6f freq=%.6f tf=%.6f original=%.6f custom=%.6f total=%.6f",
+            batch_idx, loss_t.item(), loss_f.item(), l_TF.item(), original_loss.item(), custom.item(), loss.item())
 
         total_loss.append(loss.item())
         loss.backward()
         model_optimizer.step()
 
+    if not total_loss:
+        raise ValueError("No training batches; reduce batch_size or disable drop_last")
     print('Pretraining: overall loss:{}, l_t: {}, l_f:{}, l_c:{}'.format(loss, loss_t, loss_f, l_TF))
 
     ave_loss = torch.tensor(total_loss).mean()
@@ -175,7 +190,7 @@ def model_finetune(model, model_optimizer, val_dl, config, device, training_mode
         """Produce embeddings"""
         h_t, z_t, h_f, z_f = model(data, data_f)
         h_t_aug, z_t_aug, h_f_aug, z_f_aug = model(aug1, aug1_f)
-        nt_xent_criterion = NTXentLoss_poly(device, config.target_batch_size, config.Context_Cont.temperature,
+        nt_xent_criterion = NTXentLoss_poly(device, data.shape[0], config.Context_Cont.temperature,
                                             config.Context_Cont.use_cosine_similarity)
         loss_t = nt_xent_criterion(h_t, h_t_aug)
         loss_f = nt_xent_criterion(h_f, h_f_aug)
@@ -193,16 +208,22 @@ def model_finetune(model, model_optimizer, val_dl, config, device, training_mode
         loss_p = criterion(predictions, labels)
 
         lam = 0.1
-        loss = loss_p + l_TF + lam*(loss_t + loss_f)
+        original_loss = loss_p + l_TF + lam*(loss_t + loss_f)
+        loss, custom = add_custom_loss(original_loss, z_t, z_f, z_t_aug, z_f_aug, config)
+        if not torch.isfinite(loss):
+            raise FloatingPointError("Non-finite fine-tuning loss")
+        logging.getLogger("tfc.loss").info(
+            "finetune time=%.6f freq=%.6f tf=%.6f supervised=%.6f original=%.6f custom=%.6f total=%.6f",
+            loss_t.item(), loss_f.item(), l_TF.item(), loss_p.item(), original_loss.item(), custom.item(), loss.item())
 
         acc_bs = labels.eq(predictions.detach().argmax(dim=1)).float().mean()
-        onehot_label = F.one_hot(labels)
+        onehot_label = F.one_hot(labels, num_classes=config.num_classes_target)
         pred_numpy = predictions.detach().cpu().numpy()
 
         try:
             auc_bs = roc_auc_score(onehot_label.detach().cpu().numpy(), pred_numpy, average="macro", multi_class="ovr" )
         except:
-            auc_bs = np.float(0)
+            auc_bs = float(0)
         prc_bs = average_precision_score(onehot_label.detach().cpu().numpy(), pred_numpy)
 
         total_acc.append(acc_bs)
@@ -266,14 +287,14 @@ def model_test(model,  test_dl, config,  device, training_mode, classifier=None,
 
             loss = criterion(predictions_test, labels)
             acc_bs = labels.eq(predictions_test.detach().argmax(dim=1)).float().mean()
-            onehot_label = F.one_hot(labels)
+            onehot_label = F.one_hot(labels, num_classes=config.num_classes_target)
             pred_numpy = predictions_test.detach().cpu().numpy()
             labels_numpy = labels.detach().cpu().numpy()
             try:
                 auc_bs = roc_auc_score(onehot_label.detach().cpu().numpy(), pred_numpy,
                                    average="macro", multi_class="ovr")
             except:
-                auc_bs = np.float(0)
+                auc_bs = float(0)
             prc_bs = average_precision_score(onehot_label.detach().cpu().numpy(), pred_numpy, average="macro")
             pred_numpy = np.argmax(pred_numpy, axis=1)
 
